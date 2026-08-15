@@ -1,0 +1,789 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shraddhey Vivek Dukare | Portfolio</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar">
+        <a href="#home" class="logo">
+            <span class="logo-icon">&lt;/&gt;</span> Shraddhey_96
+        </a>
+
+        <nav id="nav-menu">
+            <a href="#home" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#coding">Coding</a>
+            <a href="#projects">Projects</a>
+            <a href="#certificates">Certificates</a>
+            <a href="#education">Education</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-actions">
+            <button class="menu-button" id="menu-toggle" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ================= HERO / HOME ================= -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="small-title">
+                <span></span> INFORMATION TECHNOLOGY STUDENT
+            </div>
+            <h1>I Build Digital <br><span class="highlight">Experiences</span> With Code</h1>
+            <p class="hero-subtitle">
+                Hello, I'm <strong>Shraddhey Vivek Dukare</strong>, an Information Technology student at <strong>Government College of Engineering, Amravati</strong> passionate about software development, web development, problem solving, artificial intelligence, computer vision, and IoT.
+            </p>
+
+            <div class="hero-tags">
+                <span><i class="fa-brands fa-java"></i> Java & DSA</span>
+                <span><i class="fa-brands fa-python"></i> Python & Django</span>
+                <span><i class="fa-solid fa-eye"></i> OpenCV & AI</span>
+                <span><i class="fa-solid fa-microchip"></i> Arduino & IoT</span>
+                <span><i class="fa-solid fa-code"></i> C / C++</span>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="#projects" class="primary-btn">
+                    <i class="fa-solid fa-diagram-project"></i> View My Work
+                </a>
+                <a href="#coding" class="secondary-btn">
+                    <i class="fa-solid fa-code"></i> LeetCode & NeetCode
+                </a>
+                <a href="#contact" class="secondary-btn">
+                    <i class="fa-solid fa-paper-plane"></i> Contact Me
+                </a>
+                {% if profile and profile.resume %}
+                <a href="{{ profile.resume.url }}" target="_blank" rel="noopener noreferrer" class="secondary-btn" aria-label="View Resume">
+                    <i class="fa-solid fa-file-pdf"></i> View Resume
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="social-links">
+                <a href="https://github.com/shraddheydukare96-bit" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/shraddhey-dukare-4b41402b2/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://leetcode.com/u/shraddhey_96/" target="_blank" rel="noopener noreferrer" title="LeetCode"><i class="fa-solid fa-code"></i></a>
+                <a href="https://www.instagram.com/shraddhey_96/" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="mailto:shraddheydukare96@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+
+        <div class="hero-profile">
+            <div class="profile-card">
+                <div class="profile-top">
+                    <div>
+                        <div class="profile-number">4th Year</div>
+                        <div class="profile-label">B.Tech IT • GCOEA</div>
+                    </div>
+                    <div class="status-badge">
+                        <span class="pulse-dot"></span> Learning & Building
+                    </div>
+                </div>
+
+                <div class="profile-image-container">
+                    <img src="{% static 'images/po.jpeg' %}" alt="Shraddhey Vivek Dukare" class="profile-image" >
+                    <div class="image-glow"></div>
+                </div>
+
+                <div class="profile-bottom">
+                    <div>
+                        <strong>Shraddhey Vivek Dukare</strong>
+                        <span>IT Student & Software Developer</span>
+                    </div>
+                    <div class="experience-box">
+                        <strong>Maharashtra</strong>
+                        <span>India</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= QUICK STATS ================= -->
+    <div class="stats">
+        <div class="stats-intro">
+            <h3>Turning ideas into practical software.</h3>
+            <p>Focusing on robust programming, modern web apps, and embedded solutions.</p>
+        </div>
+        <div class="stat">
+            <h2>4+</h2>
+            <p>Major Projects</p>
+        </div>
+        <div class="stat">
+            <h2>10+</h2>
+            <p>Technologies & Tools</p>
+        </div>
+        <div class="stat">
+            <h2>2026</h2>
+            <p>Class of B.Tech IT</p>
+        </div>
+    </div>
+
+    <!-- ================= ABOUT ME ================= -->
+    <section class="section" id="about">
+        <div class="section-heading">
+            <span>Get To Know Me</span>
+            <h2>About <span>Me</span></h2>
+            <p>Bridging core engineering, intelligent software, and hands-on project development.</p>
+        </div>
+
+        <div class="about-grid">
+            <div class="about-text">
+                <h3>Aspiring Software Developer & <span>Tech Enthusiast</span></h3>
+                <p>
+                    Hello, I'm <strong>Shraddhey Vivek Dukare</strong>, a 3rd-year Information Technology student at <strong>Government College of Engineering, Amravati</strong>. I am passionate about software development, web development, Data Structures and Algorithms, Artificial Intelligence, Computer Vision, and IoT.
+                </p>
+                <p>
+                    I enjoy learning new technologies and applying my knowledge by building practical projects. Currently, I am focusing on improving my programming skills, strengthening my DSA concepts, and developing real-world software solutions.
+                </p>
+
+                <div class="about-details">
+                    <div>
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <div>
+                            <small>Degree & Branch</small>
+                            <strong>B.Tech in Information Technology (GCOEA)</strong>
+                        </div>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-bullseye"></i>
+                        <div>
+                            <small>Career Goal</small>
+                            <strong>Skilled Software Developer & Engineer</strong>
+                        </div>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-gamepad"></i>
+                        <div>
+                            <small>Hobbies & Interests</small>
+                            <strong>Watching movies , Building such websites</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <div class="green-circle"></div>
+                <div class="about-card-content">
+                    <i class="fa-solid fa-terminal"></i>
+                    <h3>Code. Build.<br>Learn.</h3>
+                    <p>Building knowledge in programming, databases, networking, algorithms, and practical software systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ================= SKILLS ================= -->
+<section class="section skills-section" id="skills">
+
+    <div class="section-heading">
+        <span>Technical Expertise</span>
+
+        <h2>
+            My <span>Skills</span> &amp; Tools
+        </h2>
+
+        <p>
+            Core programming languages, frameworks, database systems,
+            and technologies I work with.
+        </p>
+    </div>
+
+    <div class="skills-grid">
+
+        {% for skill in skills %}
+
+        <div class="skill-card">
+
+            <div class="skill-icon">
+                <i class="{{ skill.icon_class }}"></i>
+            </div>
+
+            <h3>{{ skill.name }}</h3>
+
+            <p>
+                {{ skill.description }}
+            </p>
+
+            <div class="progress">
+                <span style="width: {{ skill.proficiency_percentage }}%;"></span>
+            </div>
+
+            <small>
+                {{ skill.proficiency_percentage }}%
+            </small>
+
+        </div>
+
+        {% empty %}
+
+        <p>No skills added yet.</p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+    
+    <!-- ================= LEETCODE & NEETCODE SECTION ================= -->
+    <section class="section coding-section" id="coding">
+        <div class="section-heading">
+            <span>Problem Solving & Algorithms</span>
+            <h2>LeetCode & <span>NeetCode</span> Practice</h2>
+            <p>Consistent algorithmic preparation, data structures mastery, and curated pattern problem solving.</p>
+        </div>
+
+        <div class="coding-grid">
+            <!-- LeetCode Card -->
+            <div class="coding-card">
+                <div class="coding-card-header">
+                    <div class="coding-platform">
+                        <div class="platform-icon leetcode-icon">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <div>
+                            <h3>LeetCode Profile</h3>
+                            <span>@Shraddhey_96</span>
+                        </div>
+                    </div>
+                    <span class="platform-badge">Active Solver</span>
+                </div>
+
+                <p class="coding-desc">
+                    Practicing core data structures, optimizing time and space complexities, and tackling daily problem-solving challenges in Java.
+                </p>
+
+                <div class="coding-topics">
+                    <span>Arrays</span>
+                    <span>Two Pointers</span>
+                    <span>Binary Search</span>
+                    <span>Sorting</span>
+                    <span>Recursion</span>
+                </div>
+
+                <div class="coding-btn-container">
+                    <a href="https://leetcode.com/u/shraddhey_96/" target="_blank" rel="noopener noreferrer" class="platform-btn leetcode-btn">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Visit LeetCode Profile
+                    </a>
+                </div>
+            </div>
+
+            <!-- NeetCode Card -->
+            <div class="coding-card">
+                <div class="coding-card-header">
+                    <div class="coding-platform">
+                        <div class="platform-icon neetcode-icon">
+                            <i class="fa-solid fa-cubes-stacked"></i>
+                        </div>
+                        <div>
+                            <h3>NeetCode 150 Roadmap</h3>
+                            <span>Structured DSA Preparation</span>
+                        </div>
+                    </div>
+                    <span class="platform-badge">Roadmap Tracker</span>
+                </div>
+
+                <p class="coding-desc">
+                    Following the structured NeetCode roadmap to master essential coding patterns, algorithmic patterns, and technical interview problems.
+                </p>
+
+                <div class="coding-topics">
+                    <span>Arrays & Hashing</span>
+                    <span>Sliding Window</span>
+                    <span>Stack</span>
+                    <span>Linked Lists</span>
+                    <span>Trees</span>
+                </div>
+
+                <div class="coding-btn-container">
+                    <a href="https://neetcode.io/user/VortexTribble796" target="_blank" rel="noopener noreferrer" class="platform-btn neetcode-btn">
+                        <i class="fa-solid fa-route"></i> Explore NeetCode Roadmap
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PROJECTS ================= -->
+    <section class="section projects" id="projects">
+        <div class="section-heading">
+            <span>Portfolio Showcase</span>
+            <h2>Featured <span>Projects</span></h2>
+            <p>Practical projects across web development, computer vision, IoT, and algorithmic practice.</p>
+        </div>
+
+        <div class="project-grid">
+
+    {% for project in projects %}
+
+    <div class="project-card">
+
+        <span class="project-number">
+            {{ forloop.counter|stringformat:"02d" }}
+        </span>
+
+        <div class="project-icon">
+            <i class="{{ project.icon_class }}"></i>
+        </div>
+
+        <div class="project-category">
+            {{ project.category }}
+        </div>
+
+        <h3>
+            {{ project.title }}
+        </h3>
+
+        <p>
+            {{ project.description }}
+        </p>
+
+        <div class="project-tech">
+
+            {% for tech in project.get_tech_list %}
+                <span>{{ tech }}</span>
+            {% endfor %}
+
+        </div>
+
+        <div class="project-links-group">
+
+            {% if project.github_link %}
+                <a
+                    href="{{ project.github_link }}"
+                    target="_blank" rel="noopener noreferrer"
+                    class="project-link"
+                >
+                    <i class="fa-brands fa-github"></i>
+                    GitHub
+                </a>
+            {% endif %}
+
+            {% if project.live_link %}
+                <a
+                    href="{{ project.live_link }}"
+                    target="_blank" rel="noopener noreferrer"
+                    class="project-link"
+                >
+                    Live Demo
+                </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+        <p>No projects available.</p>
+
+    {% endfor %}
+
+</div>
+        
+        </div>
+    </section>
+
+
+<!-- ================= CERTIFICATES ================= -->
+<section class="section" id="certificates">
+
+    <div class="section-heading">
+
+        <span>Credentials & Learning</span>
+
+        <h2>
+            Verified <span>Certifications</span>
+        </h2>
+
+        <p>
+            Recognized certifications showcasing technical training,
+            practical learning, and domain knowledge.
+        </p>
+
+    </div>
+
+
+    <div class="cert-grid">
+
+        {% for certificate in certificates %}
+
+        <div class="cert-card">
+
+            <div class="cert-icon">
+                <i class="{{ certificate.icon_class }}"></i>
+            </div>
+
+
+            <div class="cert-details">
+
+                <span class="cert-issuer">
+                    {{ certificate.issuer }}
+                </span>
+
+
+                <h3>
+                    {{ certificate.title }}
+                </h3>
+
+
+                <p>
+                    {{ certificate.description }}
+                </p>
+
+
+                <div class="cert-meta">
+
+                    <small>
+                        {{ certificate.issued_date }}
+                    </small>
+
+
+                    <!-- Open uploaded certificate image -->
+                    {% if certificate.image %}
+
+                    <a
+                        href="{{ certificate.image.url }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <i class="fa-solid fa-eye"></i>
+                        View Certificate
+                    </a>
+
+                    <!-- If no image, use certificate link -->
+                    {% elif certificate.certificate_link %}
+
+                    <a
+                        href="{{ certificate.certificate_link }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        View Certificate
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {% empty %}
+
+        <p>
+            No certificates added yet.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section class="section education" id="education">
+
+    <div class="section-heading">
+
+        <span>Academic Background</span>
+
+        <h2>
+            My <span>Education</span>
+        </h2>
+
+        <p>
+            Formal academic training in Information Technology
+            and Computer Science engineering.
+        </p>
+
+    </div>
+
+
+    <div class="timeline">
+
+        {% for item in education %}
+
+        <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <div class="timeline-content">
+
+                <span>
+                    {{ item.duration }}
+                </span>
+
+                <h3>
+                    {{ item.degree }}
+                </h3>
+
+                <h4>
+                    {{ item.institution }}
+                </h4>
+
+                <p>
+                    {{ item.description }}
+                </p>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p>
+            No education details added yet.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+
+   <!-- ================= CONTACT ================= -->
+<section class="section contact" id="contact">
+
+    <div class="contact-box">
+
+        <!-- LEFT SIDE -->
+        <div class="contact-left">
+
+            <span>Let's Connect</span>
+
+            <h2>
+                Let's Build
+                <span>Something Great.</span>
+            </h2>
+
+            <p>
+                Have a project idea, opportunity, or simply want to connect?
+                Feel free to reach out to me anytime!
+            </p>
+
+
+            <div class="contact-info">
+
+                <!-- EMAIL -->
+                <a href="mailto:shraddheydukare96@gmail.com">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    <div>
+
+                        <small>Email</small>
+
+                        <strong>
+                            shraddheydukare96@gmail.com
+                        </strong>
+
+                    </div>
+
+                </a>
+
+
+                <!-- LINKEDIN -->
+                <a
+                    href="https://www.linkedin.com/in/shraddhey-dukare-4b41402b2/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <i class="fa-brands fa-linkedin-in"></i>
+
+                    <div>
+
+                        <small>LinkedIn</small>
+
+                        <strong>
+                            Shraddhey Vivek Dukare
+                        </strong>
+
+                    </div>
+
+                </a>
+
+
+                <!-- GITHUB -->
+                <a
+                    href="https://github.com/shraddheydukare96-bit"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <i class="fa-brands fa-github"></i>
+
+                    <div>
+
+                        <small>GitHub</small>
+
+                        <strong>
+                            github.com/shraddheydukare96-bit
+                        </strong>
+
+                    </div>
+
+                </a>
+
+
+                <!-- INSTAGRAM -->
+                <a
+                    href="https://www.instagram.com/shraddhey_96/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <i class="fa-brands fa-instagram"></i>
+
+                    <div>
+
+                        <small>Instagram</small>
+
+                        <strong>
+                            @shraddhey_96
+                        </strong>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE / CONTACT FORM -->
+        <form
+            class="contact-form"
+            id="contact-form"
+            method="POST"
+            action="{% url 'portfolio:submit_contact' %}"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- NAME -->
+            <div class="input-group">
+
+                <label for="name">
+                    Your Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Your Name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- EMAIL -->
+            <div class="input-group">
+
+                <label for="email">
+                    Your Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="your@email.com"
+                    required
+                >
+
+            </div>
+
+
+            <!-- MESSAGE -->
+            <div class="input-group">
+
+                <label for="message">
+                    Your Message
+                </label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    placeholder="Hi Shraddhey, I'd like to discuss a project..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- STATUS MESSAGE -->
+            <div
+                id="form-message"
+                aria-live="polite"
+            ></div>
+
+
+            <!-- SUBMIT -->
+            <button
+                type="submit"
+                class="primary-btn"
+                style="width: 100%; border: none;"
+            >
+
+                <i class="fa-solid fa-paper-plane"></i>
+
+                Send Message
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <p>&copy; 2026 Shraddhey Vivek Dukare. All Rights Reserved.</p>
+        <div class="footer-social">
+            <a href="https://github.com/shraddheydukare96-bit" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/shraddhey-dukare-4b41402b2/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://leetcode.com/u/shraddhey_96/" target="_blank" rel="noopener noreferrer" title="LeetCode"><i class="fa-solid fa-code"></i></a>
+            <a href="https://www.instagram.com/shraddhey_96/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+            <a href="mailto:shraddheydukare96@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#home" class="scroll-top-btn" id="scrollTopBtn" aria-label="Back to Top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </a>
+
+    <!-- External Script -->
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>
