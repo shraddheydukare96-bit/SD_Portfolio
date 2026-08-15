@@ -25,3 +25,6 @@ media/
 .DS_Store
 Thumbs.db
 staticfiles/
+portfolio_data.json
+db.sqlite3.backup
+media_backup/
