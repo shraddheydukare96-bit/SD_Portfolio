@@ -1,6 +1,7 @@
 from django.db import models
 from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
+
 class Profile(models.Model):
     name = models.CharField(max_length=150)
 
