@@ -13,7 +13,7 @@ SECRET_KEY = os.environ.get(
     "django-insecure-change-this-key-in-production-portfolio"
 )
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
