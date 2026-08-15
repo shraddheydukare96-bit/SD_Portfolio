@@ -1,11 +1,12 @@
 from django.db import models
-
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 class Profile(models.Model):
     name = models.CharField(max_length=150)
 
     resume = models.FileField(
         upload_to="resume/",
+        storage=RawMediaCloudinaryStorage(),
         blank=True,
         null=True
     )
