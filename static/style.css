@@ -2000,3 +2000,907 @@ footer p {
         letter-spacing: -1.2px;
     }
 }
+
+
+/* =========================================================
+   PROFILE GAME ZONE
+   ========================================================= */
+
+.profile-image-container {
+    position: relative;
+}
+
+
+/* =========================================================
+   GAME ZONE BUTTON
+   ========================================================= */
+
+.game-zone-button {
+    position: absolute;
+
+    bottom: 18px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 9px 17px;
+
+    border: 1px solid rgba(255,255,255,0.35);
+
+    border-radius: 25px;
+
+    background: rgba(0,0,0,0.65);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(8px);
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.game-zone-button:hover {
+
+    transform:
+        translateX(-50%)
+        translateY(-3px);
+
+    background: rgba(0,0,0,0.85);
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.35);
+}
+
+
+/* =========================================================
+   GAME CONTAINER
+   ========================================================= */
+
+.portfolio-game {
+
+    display: none;
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 50;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: #07111f;
+
+    border-radius: inherit;
+}
+
+
+/* When game is active */
+
+.portfolio-game.active {
+
+    display: flex;
+
+}
+
+
+/* Hide profile */
+
+#profileView.game-hidden {
+
+    display: none;
+
+}
+
+
+/* =========================================================
+   GAME HEADER
+   ========================================================= */
+
+.portfolio-game-header {
+
+    height: 36px;
+
+    min-height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 10px;
+
+    background: rgba(0,0,0,0.65);
+
+    color: white;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.4px;
+
+    z-index: 100;
+}
+
+
+#closeGameButton {
+
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.15);
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+#closeGameButton:hover {
+
+    background: #ef4444;
+
+    transform: rotate(90deg);
+
+}
+
+
+/* =========================================================
+   GAME AREA
+   ========================================================= */
+
+#paperLeakGame {
+
+    position: relative;
+
+    flex: 1;
+
+    width: 100%;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #159bd3 0%,
+            #54c4ee 68%,
+            #54b85c 68%,
+            #319644 100%
+        );
+
+    cursor: pointer;
+
+    user-select: none;
+
+    touch-action: manipulation;
+}
+
+
+/* =========================================================
+   GAME SCORE
+   ========================================================= */
+
+.game-score-board {
+
+    position: absolute;
+
+    top: 8px;
+    left: 0;
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 0 8px;
+
+    z-index: 30;
+}
+
+
+.game-score-box {
+
+    min-width: 68px;
+
+    padding: 4px 7px;
+
+    border-radius: 7px;
+
+    background: rgba(0,0,0,0.38);
+
+    text-align: center;
+
+    backdrop-filter: blur(5px);
+}
+
+
+.game-score-box small {
+
+    display: block;
+
+    font-size: 6px;
+
+    color: #dbeafe;
+
+}
+
+
+.game-score-box strong {
+
+    display: block;
+
+    font-size: 19px;
+
+    line-height: 20px;
+
+    color: white;
+}
+
+
+.game-score-box:last-child strong {
+
+    color: #facc15;
+}
+
+
+/* =========================================================
+   LEVEL DISPLAY
+   ========================================================= */
+
+.game-level-display {
+
+    position: absolute;
+
+    top: 58px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: 30;
+
+    padding: 3px 8px;
+
+    border-radius: 15px;
+
+    background: rgba(0,0,0,0.28);
+
+    color: white;
+
+    font-size: 7px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   CLOUDS
+   ========================================================= */
+
+.game-cloud {
+
+    position: absolute;
+
+    width: 55px;
+    height: 17px;
+
+    background: rgba(255,255,255,0.7);
+
+    border-radius: 50px;
+
+    z-index: 2;
+}
+
+
+.game-cloud::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 23px;
+    height: 23px;
+
+    left: 9px;
+    top: -11px;
+
+    background: rgba(255,255,255,0.7);
+
+    border-radius: 50%;
+}
+
+
+.game-cloud::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 27px;
+    height: 27px;
+
+    right: 5px;
+    top: -14px;
+
+    background: rgba(255,255,255,0.7);
+
+    border-radius: 50%;
+}
+
+
+.game-cloud-1 {
+
+    top: 80px;
+    left: 15px;
+}
+
+
+.game-cloud-2 {
+
+    top: 150px;
+    right: 10px;
+
+    transform: scale(0.7);
+}
+
+
+/* =========================================================
+   CITY
+   ========================================================= */
+
+.game-city {
+
+    position: absolute;
+
+    bottom: 35px;
+    left: 0;
+
+    width: 100%;
+    height: 70px;
+
+    opacity: 0.15;
+
+    z-index: 2;
+
+    background: #14547a;
+
+    clip-path: polygon(
+        0 100%,
+        0 60%,
+        8% 60%,
+        8% 40%,
+        15% 40%,
+        15% 65%,
+        23% 65%,
+        23% 25%,
+        31% 25%,
+        31% 55%,
+        39% 55%,
+        39% 35%,
+        47% 35%,
+        47% 70%,
+        55% 70%,
+        55% 45%,
+        63% 45%,
+        63% 20%,
+        71% 20%,
+        71% 60%,
+        79% 60%,
+        79% 35%,
+        87% 35%,
+        87% 65%,
+        94% 65%,
+        94% 45%,
+        100% 45%,
+        100% 100%
+    );
+}
+
+
+/* =========================================================
+   EXAM PAPER
+   MEDIUM SIZE
+   ========================================================= */
+
+#gamePaper {
+
+    position: absolute;
+
+    width: 43px;
+    height: 54px;
+
+    left: 38px;
+    top: 150px;
+
+    z-index: 15;
+
+    background: #fffdf5;
+
+    border: 2px solid #999;
+
+    border-radius: 2px;
+
+    transform: rotate(-8deg);
+
+    box-shadow:
+        2px 3px 4px rgba(0,0,0,0.25);
+}
+
+
+#gamePaper::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: -2px;
+    right: -2px;
+
+    width: 12px;
+    height: 12px;
+
+    background: #e5e7eb;
+
+    border-left: 2px solid #aaa;
+
+    border-bottom: 2px solid #aaa;
+
+    clip-path: polygon(
+        0 0,
+        100% 100%,
+        0 100%
+    );
+}
+
+
+.game-exam-title {
+
+    position: absolute;
+
+    top: 5px;
+    left: 4px;
+
+    width: 33px;
+
+    text-align: center;
+
+    color: #111;
+
+    font-size: 4px;
+
+    font-weight: 900;
+
+    border-bottom: 1px solid #555;
+
+    padding-bottom: 2px;
+}
+
+
+.game-exam-line {
+
+    position: absolute;
+
+    left: 5px;
+
+    width: 31px;
+
+    height: 1px;
+
+    background: #cbd5e1;
+}
+
+
+.game-exam-line.line1 {
+    top: 21px;
+}
+
+.game-exam-line.line2 {
+    top: 29px;
+}
+
+.game-exam-line.line3 {
+    top: 37px;
+}
+
+.game-exam-line.line4 {
+    top: 45px;
+}
+
+
+.game-marks {
+
+    position: absolute;
+
+    right: 3px;
+    bottom: 3px;
+
+    font-size: 4px;
+
+    font-weight: 900;
+
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   MONEY PIPES
+   ========================================================= */
+
+.portfolio-money-pipe {
+
+    position: absolute;
+
+    width: 48px;
+
+    z-index: 10;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #4caf2e 0px,
+            #4caf2e 4px,
+            #237d20 5px,
+            #237d20 7px
+        );
+
+    border: 2px solid #176b1c;
+
+    border-radius: 3px;
+}
+
+
+.portfolio-money-pipe::before {
+
+    content: "₹";
+
+    position: absolute;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 15px;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #fff4b0;
+
+    font-size: 15px;
+
+    font-weight: 900;
+
+    background: #e5c86b;
+
+    border-left: 1px solid #a98d48;
+
+    border-right: 1px solid #a98d48;
+}
+
+
+.portfolio-money-pipe::after {
+
+    content: "₹ CASH ₹";
+
+    position: absolute;
+
+    left: -4px;
+
+    width: 52px;
+
+    height: 17px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #fff59d;
+
+    font-size: 5px;
+
+    font-weight: 900;
+
+    background: #278b22;
+
+    border: 2px solid #176b1c;
+
+    border-radius: 4px;
+}
+
+
+.portfolio-money-pipe.top {
+    top: 0;
+}
+
+
+.portfolio-money-pipe.top::after {
+    bottom: -2px;
+}
+
+
+.portfolio-money-pipe.bottom {
+    bottom: 35px;
+}
+
+
+.portfolio-money-pipe.bottom::after {
+    top: -2px;
+}
+
+
+/* =========================================================
+   GROUND
+   ========================================================= */
+
+.game-ground {
+
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 36px;
+
+    z-index: 20;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #7ac943 0px,
+            #4d9f35 6px,
+            #d6a85d 7px,
+            #c58d42 100%
+        );
+
+    border-top: 3px solid #3c7c2a;
+}
+
+
+/* =========================================================
+   GAME MESSAGE
+   ========================================================= */
+
+.game-message {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 50;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 12px;
+
+    text-align: center;
+
+    background: rgba(0,0,0,0.45);
+
+    backdrop-filter: blur(3px);
+}
+
+
+.game-message h2 {
+
+    margin: 0 0 7px;
+
+    font-size: 20px;
+
+    color: white;
+}
+
+
+.game-message p {
+
+    max-width: 190px;
+
+    margin: 0 0 9px;
+
+    font-size: 9px;
+
+    line-height: 1.4;
+
+    color: #f1f5f9;
+}
+
+
+.game-level-title {
+
+    margin-bottom: 6px;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    color: #e2e8f0;
+}
+
+
+/* =========================================================
+   LEVEL BUTTONS
+   ========================================================= */
+
+.game-level-buttons {
+
+    display: flex;
+
+    gap: 4px;
+
+    margin-bottom: 10px;
+}
+
+
+.game-level-btn {
+
+    padding: 5px 7px;
+
+    border: 1px solid rgba(255,255,255,0.25);
+
+    border-radius: 15px;
+
+    background: rgba(255,255,255,0.1);
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+.game-level-btn.selected {
+
+    background: #facc15;
+
+    color: #172033;
+
+    border-color: #facc15;
+}
+
+
+.game-level-btn.easy.selected {
+
+    background: #22c55e;
+
+    color: white;
+}
+
+
+.game-level-btn.hard.selected {
+
+    background: #ef4444;
+
+    color: white;
+}
+
+
+/* =========================================================
+   START BUTTON
+   ========================================================= */
+
+.game-start-button {
+
+    padding: 7px 13px;
+
+    border: none;
+
+    border-radius: 20px;
+
+    background: #facc15;
+
+    color: #172033;
+
+    font-family: inherit;
+
+    font-size: 8px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 0 #b78b00;
+}
+
+
+/* =========================================================
+   GAME INSTRUCTION
+   ========================================================= */
+
+.portfolio-game-instruction {
+
+    height: 24px;
+
+    min-height: 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(0,0,0,0.7);
+
+    color: #cbd5e1;
+
+    font-size: 7px;
+
+    z-index: 100;
+}
+
+
+.portfolio-game-instruction strong {
+
+    color: #facc15;
+
+    margin-right: 3px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .game-zone-button {
+
+        bottom: 12px;
+
+        font-size: 11px;
+
+        padding: 8px 14px;
+    }
+
+}

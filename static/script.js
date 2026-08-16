@@ -774,3 +774,1083 @@ function initDynamicYear() {
         );
 
 }
+
+/* =========================================================
+   PORTFOLIO GAME ZONE
+   PAPER LEAK 2026
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const gameZoneButton =
+        document.getElementById("gameZoneButton");
+
+    const closeGameButton =
+        document.getElementById("closeGameButton");
+
+    const profileView =
+        document.getElementById("profileView");
+
+    const portfolioGame =
+        document.getElementById("portfolioGame");
+
+    const game =
+        document.getElementById("paperLeakGame");
+
+    const paper =
+        document.getElementById("gamePaper");
+
+    const scoreText =
+        document.getElementById("gameScore");
+
+    const bestScoreText =
+        document.getElementById("gameBestScore");
+
+    const message =
+        document.getElementById("gameMessage");
+
+    const messageTitle =
+        document.getElementById("gameMessageTitle");
+
+    const messageText =
+        document.getElementById("gameMessageText");
+
+    const startButton =
+        document.getElementById("gameStartButton");
+
+    const levelDisplay =
+        document.getElementById("gameLevelDisplay");
+
+    const levelButtons =
+        document.querySelectorAll(
+            ".game-level-btn"
+        );
+
+
+    /* =========================================
+       GAME VARIABLES
+    ========================================= */
+
+    let paperY = 150;
+
+    let velocity = 0;
+
+    let selectedLevel = "easy";
+
+    let gravity = 0.20;
+
+    let flapPower = -6;
+
+    let pipeSpeed = 2.2;
+
+    let pipeGap = 150;
+
+    let moneyPipes = [];
+
+    let score = 0;
+
+    let bestScore =
+        Number(
+            localStorage.getItem(
+                "portfolioPaperLeakBest"
+            )
+        ) || 0;
+
+    let gameRunning = false;
+
+    let pipeTimer = 0;
+
+    let lastTime = 0;
+
+
+    bestScoreText.textContent =
+        bestScore;
+
+
+    /* =========================================
+       LEVEL SETTINGS
+    ========================================= */
+
+    const levels = {
+
+        easy: {
+
+            gravity: 0.20,
+
+            flapPower: -6,
+
+            pipeSpeed: 2.2,
+
+            pipeGap: 150,
+
+            label: "🟢 EASY"
+
+        },
+
+
+        normal: {
+
+            gravity: 0.25,
+
+            flapPower: -6.5,
+
+            pipeSpeed: 2.6,
+
+            pipeGap: 138,
+
+            label: "🟡 NORMAL"
+
+        },
+
+
+        hard: {
+
+            gravity: 0.34,
+
+            flapPower: -7.2,
+
+            pipeSpeed: 3.3,
+
+            pipeGap: 112,
+
+            label: "🔴 HARD"
+
+        }
+
+    };
+
+
+    /* =========================================
+       OPEN GAME ZONE
+    ========================================= */
+
+    gameZoneButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            profileView.classList.add(
+                "game-hidden"
+            );
+
+
+            portfolioGame.classList.add(
+                "active"
+            );
+
+
+            /*
+                Show game menu
+            */
+
+            resetGame();
+
+
+            message.style.display =
+                "flex";
+
+        }
+    );
+
+
+    /* =========================================
+       CLOSE GAME
+    ========================================= */
+
+    closeGameButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            stopGame();
+
+
+            portfolioGame.classList.remove(
+                "active"
+            );
+
+
+            profileView.classList.remove(
+                "game-hidden"
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       LEVEL SELECTION
+    ========================================= */
+
+    levelButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                if (gameRunning) {
+                    return;
+                }
+
+
+                selectedLevel =
+                    this.dataset.level;
+
+
+                levelButtons.forEach(
+                    btn => {
+
+                        btn.classList.remove(
+                            "selected"
+                        );
+
+                    }
+                );
+
+
+                this.classList.add(
+                    "selected"
+                );
+
+
+                levelDisplay.textContent =
+                    levels[
+                        selectedLevel
+                    ].label;
+
+            }
+        );
+
+    });
+
+
+    /* =========================================
+       APPLY LEVEL
+    ========================================= */
+
+    function applyLevelSettings() {
+
+        const settings =
+            levels[selectedLevel];
+
+
+        gravity =
+            settings.gravity;
+
+
+        flapPower =
+            settings.flapPower;
+
+
+        pipeSpeed =
+            settings.pipeSpeed;
+
+
+        pipeGap =
+            settings.pipeGap;
+
+
+        levelDisplay.textContent =
+            settings.label;
+
+    }
+
+
+    /* =========================================
+       RESET GAME
+    ========================================= */
+
+    function resetGame() {
+
+        stopGame();
+
+
+        moneyPipes.forEach(
+            pipe => {
+
+                pipe.top.remove();
+
+                pipe.bottom.remove();
+
+            }
+        );
+
+
+        moneyPipes = [];
+
+
+        paperY = 150;
+
+        velocity = 0;
+
+        score = 0;
+
+        pipeTimer = 0;
+
+        scoreText.textContent =
+            "0";
+
+
+        messageTitle.textContent =
+            "📄 PAPER LEAK!";
+
+
+        messageText.textContent =
+            "The exam hasn't started yet, but the paper is already trying to escape. 😂";
+
+
+        startButton.textContent =
+            "Start the Escape";
+
+
+        applyLevelSettings();
+
+    }
+
+
+    /* =========================================
+       START GAME
+    ========================================= */
+
+    function startGame() {
+
+        applyLevelSettings();
+
+
+        moneyPipes.forEach(
+            pipe => {
+
+                pipe.top.remove();
+
+                pipe.bottom.remove();
+
+            }
+        );
+
+
+        moneyPipes = [];
+
+
+        paperY = 150;
+
+        velocity = 0;
+
+        score = 0;
+
+        pipeTimer = 0;
+
+        gameRunning = true;
+
+
+        scoreText.textContent =
+            "0";
+
+
+        message.style.display =
+            "none";
+
+
+        lastTime =
+            performance.now();
+
+
+        requestAnimationFrame(
+            gameLoop
+        );
+
+    }
+
+
+    /* =========================================
+       STOP GAME
+    ========================================= */
+
+    function stopGame() {
+
+        gameRunning = false;
+
+    }
+
+
+    /* =========================================
+       FLAP
+    ========================================= */
+
+    function flap() {
+
+        if (!gameRunning) {
+            return;
+        }
+
+
+        velocity =
+            flapPower;
+
+    }
+
+
+    /* =========================================
+       CREATE MONEY PIPE
+    ========================================= */
+
+    function createMoneyPipe() {
+
+        const gameHeight =
+            game.clientHeight;
+
+
+        const gap =
+            pipeGap;
+
+
+        const minTop =
+            40;
+
+
+        const maxTop =
+            gameHeight -
+            gap -
+            75;
+
+
+        const topHeight =
+            Math.floor(
+                Math.random() *
+                (maxTop - minTop)
+                + minTop
+            );
+
+
+        const bottomHeight =
+            gameHeight -
+            topHeight -
+            gap -
+            35;
+
+
+        /* TOP */
+
+        const top =
+            document.createElement(
+                "div"
+            );
+
+
+        top.className =
+            "portfolio-money-pipe top";
+
+
+        top.style.height =
+            topHeight + "px";
+
+
+        /* BOTTOM */
+
+        const bottom =
+            document.createElement(
+                "div"
+            );
+
+
+        bottom.className =
+            "portfolio-money-pipe bottom";
+
+
+        bottom.style.height =
+            bottomHeight + "px";
+
+
+        game.appendChild(top);
+
+        game.appendChild(bottom);
+
+
+        moneyPipes.push({
+
+            top: top,
+
+            bottom: bottom,
+
+            x:
+                game.clientWidth + 55,
+
+            scored: false
+
+        });
+
+    }
+
+
+    /* =========================================
+       COLLISION
+    ========================================= */
+
+    function collision(pipe) {
+
+        /*
+            Medium paper:
+
+            43px wide
+            54px high
+        */
+
+        const paperLeft =
+            38;
+
+
+        const paperRight =
+            paperLeft + 43;
+
+
+        const paperTop =
+            paperY;
+
+
+        const paperBottom =
+            paperY + 54;
+
+
+        const pipeLeft =
+            pipe.x;
+
+
+        const pipeRight =
+            pipe.x + 48;
+
+
+        if (
+            paperRight > pipeLeft &&
+            paperLeft < pipeRight
+        ) {
+
+
+            const topHeight =
+                pipe.top.offsetHeight;
+
+
+            const bottomStart =
+                game.clientHeight -
+                pipe.bottom.offsetHeight -
+                35;
+
+
+            if (
+                paperTop < topHeight ||
+                paperBottom > bottomStart
+            ) {
+
+                return true;
+
+            }
+
+        }
+
+
+        return false;
+
+    }
+
+
+    /* =========================================
+       PAPER LEAKED
+    ========================================= */
+
+    function endGame() {
+
+        if (!gameRunning) {
+            return;
+        }
+
+
+        gameRunning = false;
+
+
+        /*
+            Best score
+        */
+
+        if (
+            score > bestScore
+        ) {
+
+            bestScore =
+                score;
+
+
+            localStorage.setItem(
+                "portfolioPaperLeakBest",
+                bestScore
+            );
+
+        }
+
+
+        bestScoreText.textContent =
+            bestScore;
+
+
+        /*
+            Sarcastic messages
+        */
+
+        const jokes = [
+
+            "Paper leaked faster than your preparation. 😂",
+
+            "Congratulations! You escaped the syllabus. 💀",
+
+            "Your paper has officially resigned. 📝",
+
+            "Exam cancelled? No. Paper escaped? YES. 😂",
+
+            "Even the paper knew you weren't ready. 😭",
+
+            "The question paper said: 'I'm out.' 🏃",
+
+            "You studied everything except how to keep the paper safe. 💀",
+
+            "Breaking news: Student loses paper before exam. 😂",
+
+            "At least your paper got more marks than you. 😭",
+
+            "Professor: Where is the paper? Student: Ask the money. 💰",
+
+            "Paper successfully leaked. Career still loading... 😂",
+
+            "You didn't fail the exam. The paper failed you. 💀",
+
+            "The syllabus survived. Your paper didn't. 😂",
+
+            "Your preparation was confidential. So was the paper. 🤫",
+
+            "No cheating detected. Just extremely poor paper management. 😭",
+
+            "Even Google couldn't save this attempt. 💀",
+
+            "The paper saw the syllabus and chose freedom. 😂"
+
+        ];
+
+
+        const randomJoke =
+            jokes[
+                Math.floor(
+                    Math.random() *
+                    jokes.length
+                )
+            ];
+
+
+        message.style.display =
+            "flex";
+
+
+        messageTitle.textContent =
+            "📄 PAPER LEAKED!";
+
+
+        messageText.textContent =
+            randomJoke;
+
+
+        startButton.textContent =
+            "Leak Another Paper";
+
+    }
+
+
+    /* =========================================
+       GAME LOOP
+    ========================================= */
+
+    function gameLoop(time) {
+
+        if (!gameRunning) {
+            return;
+        }
+
+
+        const delta =
+            Math.min(
+                (time - lastTime) / 16.67,
+                2
+            );
+
+
+        lastTime =
+            time;
+
+
+        /*
+            Paper physics
+        */
+
+        velocity +=
+            gravity * delta;
+
+
+        paperY +=
+            velocity * delta;
+
+
+        /*
+            Rotation
+        */
+
+        const rotation =
+            Math.min(
+                Math.max(
+                    velocity * 4,
+                    -20
+                ),
+                80
+            );
+
+
+        paper.style.top =
+            paperY + "px";
+
+
+        paper.style.transform =
+            `rotate(${rotation}deg)`;
+
+
+        /*
+            Ceiling
+        */
+
+        if (
+            paperY < 0
+        ) {
+
+            endGame();
+
+            return;
+
+        }
+
+
+        /*
+            Ground
+        */
+
+        if (
+            paperY + 54 >
+            game.clientHeight - 35
+        ) {
+
+            endGame();
+
+            return;
+
+        }
+
+
+        /*
+            Create money
+        */
+
+        pipeTimer += delta;
+
+
+        let spawnRate = 110;
+
+
+        if (
+            selectedLevel === "normal"
+        ) {
+
+            spawnRate = 105;
+
+        }
+
+
+        if (
+            selectedLevel === "hard"
+        ) {
+
+            spawnRate = 90;
+
+        }
+
+
+        if (
+            pipeTimer > spawnRate
+        ) {
+
+            createMoneyPipe();
+
+            pipeTimer = 0;
+
+        }
+
+
+        /*
+            Move money
+        */
+
+        moneyPipes.forEach(
+            pipe => {
+
+
+                pipe.x -=
+                    pipeSpeed * delta;
+
+
+                pipe.top.style.left =
+                    pipe.x + "px";
+
+
+                pipe.bottom.style.left =
+                    pipe.x + "px";
+
+
+                /*
+                    Score
+                */
+
+                if (
+                    !pipe.scored &&
+                    pipe.x + 48 < 38
+                ) {
+
+                    pipe.scored = true;
+
+                    score++;
+
+                    scoreText.textContent =
+                        score;
+
+                }
+
+
+                /*
+                    Collision
+                */
+
+                if (
+                    collision(pipe)
+                ) {
+
+                    endGame();
+
+                }
+
+            }
+        );
+
+
+        /*
+            Remove old pipes
+        */
+
+        moneyPipes =
+            moneyPipes.filter(
+                pipe => {
+
+                    if (
+                        pipe.x < -60
+                    ) {
+
+                        pipe.top.remove();
+
+                        pipe.bottom.remove();
+
+                        return false;
+
+                    }
+
+                    return true;
+
+                }
+            );
+
+
+        requestAnimationFrame(
+            gameLoop
+        );
+
+    }
+
+
+    /* =========================================
+       START BUTTON
+    ========================================= */
+
+    startButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            startGame();
+
+        }
+    );
+
+
+    /* =========================================
+       GAME CLICK
+    ========================================= */
+
+    game.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target.closest(
+                    ".game-level-btn"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                event.target ===
+                startButton
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                !gameRunning &&
+                message.style.display !== "none"
+            ) {
+
+                return;
+
+            }
+
+
+            flap();
+
+        }
+    );
+
+
+    /* =========================================
+       KEYBOARD
+    ========================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            /*
+                Only respond when
+                Game Zone is open
+            */
+
+            if (
+                !portfolioGame.classList.contains(
+                    "active"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                event.code === "Space"
+            ) {
+
+                event.preventDefault();
+
+
+                if (!gameRunning) {
+
+                    startGame();
+
+                }
+                else {
+
+                    flap();
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       TOUCH
+    ========================================= */
+
+    game.addEventListener(
+        "touchstart",
+        function (event) {
+
+            if (
+                event.target.closest(
+                    ".game-level-btn"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                event.target ===
+                startButton
+            ) {
+
+                return;
+
+            }
+
+
+            event.preventDefault();
+
+
+            if (!gameRunning) {
+
+                startGame();
+
+            }
+            else {
+
+                flap();
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* =========================================
+       INITIAL
+    ========================================= */
+
+    applyLevelSettings();
+
+});

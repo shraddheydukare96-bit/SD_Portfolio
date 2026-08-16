@@ -108,10 +108,223 @@
                     </div>
                 </div>
 
-                <div class="profile-image-container">
-                    <img src="{% static 'images/po.jpeg' %}" alt="Shraddhey Vivek Dukare" class="profile-image" >
-                    <div class="image-glow"></div>
+               <div class="profile-image-container" id="profileGameContainer">
+
+    <!-- NORMAL PROFILE IMAGE -->
+
+    <div id="profileView">
+
+        <img
+            src="{% static 'images/po.jpeg' %}"
+            alt="Shraddhey Vivek Dukare"
+            class="profile-image"
+        >
+
+        <div class="image-glow"></div>
+
+        <!-- GAME ZONE BUTTON -->
+
+        <button
+            type="button"
+            id="gameZoneButton"
+            class="game-zone-button"
+        >
+            <i class="fa-solid fa-gamepad"></i>
+            Game Zone
+        </button>
+
+    </div>
+
+
+    <!-- ==============================
+         GAME VIEW
+    =============================== -->
+
+    <div
+        id="portfolioGame"
+        class="portfolio-game"
+    >
+
+        <!-- GAME HEADER -->
+
+        <div class="portfolio-game-header">
+
+            <span>
+                📄 PAPER LEAK 2026
+            </span>
+
+            <button
+                type="button"
+                id="closeGameButton"
+                aria-label="Close Game"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <!-- GAME -->
+
+        <div id="paperLeakGame">
+
+            <!-- SCORE -->
+
+            <div class="game-score-board">
+
+                <div class="game-score-box">
+
+                    <small>
+                        PAPERS ESCAPED
+                    </small>
+
+                    <strong id="gameScore">
+                        0
+                    </strong>
+
                 </div>
+
+
+                <div class="game-score-box">
+
+                    <small>
+                        BEST ESCAPE
+                    </small>
+
+                    <strong id="gameBestScore">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- LEVEL -->
+
+            <div
+                id="gameLevelDisplay"
+                class="game-level-display"
+            >
+                🟢 EASY
+            </div>
+
+
+            <!-- CLOUDS -->
+
+            <div class="game-cloud game-cloud-1"></div>
+            <div class="game-cloud game-cloud-2"></div>
+
+
+            <!-- CITY -->
+
+            <div class="game-city"></div>
+
+
+            <!-- EXAM PAPER -->
+
+            <div id="gamePaper">
+
+                <div class="game-exam-title">
+                    ENGINEERING EXAM
+                </div>
+
+                <div class="game-exam-line line1"></div>
+                <div class="game-exam-line line2"></div>
+                <div class="game-exam-line line3"></div>
+                <div class="game-exam-line line4"></div>
+
+                <div class="game-marks">
+                    10M
+                </div>
+
+            </div>
+
+
+            <!-- GROUND -->
+
+            <div class="game-ground"></div>
+
+
+            <!-- START / GAME OVER -->
+
+            <div
+                id="gameMessage"
+                class="game-message"
+            >
+
+                <h2 id="gameMessageTitle">
+                    📄 PAPER LEAK!
+                </h2>
+
+                <p id="gameMessageText">
+                    The exam hasn't started yet,
+                    but the paper is already trying
+                    to escape. 😂
+                </p>
+
+
+                <!-- LEVEL -->
+
+                <div class="game-level-title">
+                    Choose your suffering:
+                </div>
+
+
+                <div class="game-level-buttons">
+
+                    <button
+                        type="button"
+                        class="game-level-btn easy selected"
+                        data-level="easy"
+                    >
+                        🟢 Easy
+                    </button>
+
+                    <button
+                        type="button"
+                        class="game-level-btn normal"
+                        data-level="normal"
+                    >
+                        🟡 Normal
+                    </button>
+
+                    <button
+                        type="button"
+                        class="game-level-btn hard"
+                        data-level="hard"
+                    >
+                        🔴 Hard
+                    </button>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="gameStartButton"
+                    class="game-start-button"
+                >
+                    Start the Escape
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- GAME INSTRUCTION -->
+
+        <div class="portfolio-game-instruction">
+
+            <strong>SPACE / CLICK / TAP</strong>
+            = Fly the paper
+
+        </div>
+
+    </div>
+
+</div>
 
                 <div class="profile-bottom">
                     <div>
