@@ -779,8 +779,16 @@ function initDynamicYear() {
    PORTFOLIO GAME ZONE
    PAPER LEAK 2026
    ========================================================= */
+/* =========================================================
+   PORTFOLIO GAME ZONE
+   PAPER LEAK 2026
+   ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
 
     const gameZoneButton =
         document.getElementById("gameZoneButton");
@@ -827,27 +835,111 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-    /* =========================================
-       GAME VARIABLES
-    ========================================= */
+    /* =====================================================
+       SAFETY CHECK
+       Prevent errors if Game Zone HTML is missing
+    ===================================================== */
 
-    let paperY = 150;
+    if (
+        !gameZoneButton ||
+        !closeGameButton ||
+        !profileView ||
+        !portfolioGame ||
+        !game ||
+        !paper
+    ) {
+        return;
+    }
+
+
+    /* =====================================================
+       GAME VARIABLES
+    ===================================================== */
+
+    /*
+       Medium-sized paper
+    */
+
+    const PAPER_WIDTH = 46;
+
+    const PAPER_HEIGHT = 58;
+
+
+    /*
+       Paper horizontal position
+    */
+
+    const PAPER_X = 70;
+
+
+    /*
+       Ground height
+    */
+
+    const GROUND_HEIGHT = 40;
+
+
+    /*
+       Current paper position
+    */
+
+    let paperY = 220;
+
+
+    /*
+       Vertical movement
+    */
 
     let velocity = 0;
 
+
+    /*
+       Current difficulty
+    */
+
     let selectedLevel = "easy";
 
-    let gravity = 0.20;
 
-    let flapPower = -6;
+    /*
+       Physics
+    */
 
-    let pipeSpeed = 2.2;
+    let gravity = 0.12;
 
-    let pipeGap = 150;
+    let flapPower = -5.2;
+
+
+    /*
+       Money movement
+    */
+
+    let pipeSpeed = 1.8;
+
+
+    /*
+       Gap between money stacks
+    */
+
+    let pipeGap = 170;
+
+
+    /*
+       Money pipes
+    */
 
     let moneyPipes = [];
 
+
+    /*
+       Score
+    */
+
     let score = 0;
+
+
+    /*
+       Best score
+    */
 
     let bestScore =
         Number(
@@ -856,62 +948,104 @@ document.addEventListener("DOMContentLoaded", function () {
             )
         ) || 0;
 
+
+    /*
+       Game state
+    */
+
     let gameRunning = false;
 
+
+    /*
+       Pipe creation timer
+    */
+
     let pipeTimer = 0;
+
+
+    /*
+       Animation timing
+    */
 
     let lastTime = 0;
 
 
-    bestScoreText.textContent =
-        bestScore;
+    /*
+       Prevent duplicate game loops
+    */
+
+    let animationFrame = null;
 
 
-    /* =========================================
+    /*
+       Display best score
+    */
+
+    if (bestScoreText) {
+
+        bestScoreText.textContent =
+            bestScore;
+
+    }
+
+
+    /* =====================================================
        LEVEL SETTINGS
-    ========================================= */
+    ===================================================== */
 
     const levels = {
 
+        /* ================================================
+           EASY
+        ================================================= */
+
         easy: {
 
-            gravity: 0.20,
+            gravity: 0.12,
 
-            flapPower: -6,
+            flapPower: -5.2,
 
-            pipeSpeed: 2.2,
+            pipeSpeed: 1.8,
 
-            pipeGap: 150,
+            pipeGap: 170,
 
             label: "🟢 EASY"
 
         },
 
 
+        /* ================================================
+           NORMAL
+        ================================================= */
+
         normal: {
 
-            gravity: 0.25,
+            gravity: 0.16,
 
-            flapPower: -6.5,
+            flapPower: -5.8,
 
-            pipeSpeed: 2.6,
+            pipeSpeed: 2.1,
 
-            pipeGap: 138,
+            pipeGap: 155,
 
             label: "🟡 NORMAL"
 
         },
 
 
+        /* ================================================
+           HARD
+        ================================================= */
+
         hard: {
 
-            gravity: 0.34,
+            gravity: 0.23,
 
-            flapPower: -7.2,
+            flapPower: -6.5,
 
-            pipeSpeed: 3.3,
+            pipeSpeed: 2.7,
 
-            pipeGap: 112,
+            pipeGap: 125,
 
             label: "🔴 HARD"
 
@@ -920,126 +1054,9 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
 
-    /* =========================================
-       OPEN GAME ZONE
-    ========================================= */
-
-    gameZoneButton.addEventListener(
-        "click",
-        function (event) {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-
-            profileView.classList.add(
-                "game-hidden"
-            );
-
-
-            portfolioGame.classList.add(
-                "active"
-            );
-
-
-            /*
-                Show game menu
-            */
-
-            resetGame();
-
-
-            message.style.display =
-                "flex";
-
-        }
-    );
-
-
-    /* =========================================
-       CLOSE GAME
-    ========================================= */
-
-    closeGameButton.addEventListener(
-        "click",
-        function (event) {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-
-            stopGame();
-
-
-            portfolioGame.classList.remove(
-                "active"
-            );
-
-
-            profileView.classList.remove(
-                "game-hidden"
-            );
-
-        }
-    );
-
-
-    /* =========================================
-       LEVEL SELECTION
-    ========================================= */
-
-    levelButtons.forEach(button => {
-
-        button.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-
-                if (gameRunning) {
-                    return;
-                }
-
-
-                selectedLevel =
-                    this.dataset.level;
-
-
-                levelButtons.forEach(
-                    btn => {
-
-                        btn.classList.remove(
-                            "selected"
-                        );
-
-                    }
-                );
-
-
-                this.classList.add(
-                    "selected"
-                );
-
-
-                levelDisplay.textContent =
-                    levels[
-                        selectedLevel
-                    ].label;
-
-            }
-        );
-
-    });
-
-
-    /* =========================================
-       APPLY LEVEL
-    ========================================= */
+    /* =====================================================
+       APPLY LEVEL SETTINGS
+    ===================================================== */
 
     function applyLevelSettings() {
 
@@ -1063,138 +1080,468 @@ document.addEventListener("DOMContentLoaded", function () {
             settings.pipeGap;
 
 
-        levelDisplay.textContent =
-            settings.label;
+        if (levelDisplay) {
+
+            levelDisplay.textContent =
+                settings.label;
+
+        }
 
     }
 
 
-    /* =========================================
+    /* =====================================================
+       OPEN GAME ZONE
+    ===================================================== */
+
+    gameZoneButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            /*
+               Hide profile picture
+            */
+
+            profileView.classList.add(
+                "game-hidden"
+            );
+
+
+            /*
+               Show game
+            */
+
+            portfolioGame.classList.add(
+                "active"
+            );
+
+
+            /*
+               Reset game
+            */
+
+            resetGame();
+
+
+            /*
+               Show start screen
+            */
+
+            message.style.display =
+                "flex";
+
+        }
+    );
+
+
+    /* =====================================================
+       CLOSE GAME
+    ===================================================== */
+
+    closeGameButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            /*
+               Stop game
+            */
+
+            stopGame();
+
+
+            /*
+               Remove old money
+            */
+
+            clearMoneyPipes();
+
+
+            /*
+               Hide game
+            */
+
+            portfolioGame.classList.remove(
+                "active"
+            );
+
+
+            /*
+               Show profile picture
+            */
+
+            profileView.classList.remove(
+                "game-hidden"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       LEVEL SELECTION
+    ===================================================== */
+
+    levelButtons.forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    /*
+                       Don't allow changing
+                       level during game
+                    */
+
+                    if (gameRunning) {
+
+                        return;
+
+                    }
+
+
+                    /*
+                       Get selected level
+                    */
+
+                    selectedLevel =
+                        this.dataset.level;
+
+
+                    /*
+                       Remove old selection
+                    */
+
+                    levelButtons.forEach(
+                        function (btn) {
+
+                            btn.classList.remove(
+                                "selected"
+                            );
+
+                        }
+                    );
+
+
+                    /*
+                       Select current button
+                    */
+
+                    this.classList.add(
+                        "selected"
+                    );
+
+
+                    /*
+                       Apply settings
+                    */
+
+                    applyLevelSettings();
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       CLEAR MONEY PIPES
+    ===================================================== */
+
+    function clearMoneyPipes() {
+
+        moneyPipes.forEach(
+            function (pipe) {
+
+                if (pipe.top) {
+
+                    pipe.top.remove();
+
+                }
+
+                if (pipe.bottom) {
+
+                    pipe.bottom.remove();
+
+                }
+
+            }
+        );
+
+
+        moneyPipes = [];
+
+    }
+
+
+    /* =====================================================
        RESET GAME
-    ========================================= */
+    ===================================================== */
 
     function resetGame() {
+
+        /*
+           Stop previous animation
+        */
 
         stopGame();
 
 
-        moneyPipes.forEach(
-            pipe => {
+        /*
+           Remove old money
+        */
 
-                pipe.top.remove();
-
-                pipe.bottom.remove();
-
-            }
-        );
+        clearMoneyPipes();
 
 
-        moneyPipes = [];
+        /*
+           Reset paper position
+        */
+
+        paperY = 220;
 
 
-        paperY = 150;
+        /*
+           Reset velocity
+        */
 
         velocity = 0;
 
+
+        /*
+           Reset score
+        */
+
         score = 0;
+
+
+        /*
+           Reset pipe timer
+        */
 
         pipeTimer = 0;
 
-        scoreText.textContent =
-            "0";
+
+        /*
+           Reset paper appearance
+        */
+
+        paper.style.top =
+            paperY + "px";
 
 
-        messageTitle.textContent =
-            "📄 PAPER LEAK!";
+        paper.style.transform =
+            "rotate(-8deg)";
 
 
-        messageText.textContent =
-            "The exam hasn't started yet, but the paper is already trying to escape. 😂";
+        /*
+           Reset score display
+        */
+
+        if (scoreText) {
+
+            scoreText.textContent =
+                "0";
+
+        }
 
 
-        startButton.textContent =
-            "Start the Escape";
+        /*
+           Reset start message
+        */
 
+        if (messageTitle) {
+
+            messageTitle.textContent =
+                "📄 PAPER LEAK!";
+
+        }
+
+
+        if (messageText) {
+
+            messageText.textContent =
+                "The exam hasn't started yet, but the paper is already trying to escape. 😂";
+
+        }
+
+
+        if (startButton) {
+
+            startButton.textContent =
+                "Start the Escape";
+
+        }
+
+
+        /*
+           Apply selected difficulty
+        */
 
         applyLevelSettings();
 
     }
 
 
-    /* =========================================
+    /* =====================================================
        START GAME
-    ========================================= */
+    ===================================================== */
 
     function startGame() {
+
+        /*
+           Stop any old game loop
+        */
+
+        stopGame();
+
+
+        /*
+           Clear previous pipes
+        */
+
+        clearMoneyPipes();
+
+
+        /*
+           Apply selected level
+        */
 
         applyLevelSettings();
 
 
-        moneyPipes.forEach(
-            pipe => {
+        /*
+           Reset paper
+        */
 
-                pipe.top.remove();
-
-                pipe.bottom.remove();
-
-            }
-        );
-
-
-        moneyPipes = [];
-
-
-        paperY = 150;
+        paperY = 220;
 
         velocity = 0;
 
+
+        /*
+           Reset score
+        */
+
         score = 0;
 
+
+        /*
+           Reset pipe timer
+        */
+
         pipeTimer = 0;
+
+
+        /*
+           Reset paper position
+        */
+
+        paper.style.top =
+            paperY + "px";
+
+
+        paper.style.transform =
+            "rotate(-8deg)";
+
+
+        /*
+           Reset score display
+        */
+
+        if (scoreText) {
+
+            scoreText.textContent =
+                "0";
+
+        }
+
+
+        /*
+           Start game
+        */
 
         gameRunning = true;
 
 
-        scoreText.textContent =
-            "0";
-
+        /*
+           Hide start screen
+        */
 
         message.style.display =
             "none";
 
 
+        /*
+           Start animation
+        */
+
         lastTime =
             performance.now();
 
 
-        requestAnimationFrame(
-            gameLoop
-        );
+        animationFrame =
+            requestAnimationFrame(
+                gameLoop
+            );
 
     }
 
 
-    /* =========================================
+    /* =====================================================
        STOP GAME
-    ========================================= */
+    ===================================================== */
 
     function stopGame() {
 
         gameRunning = false;
 
+
+        if (animationFrame !== null) {
+
+            cancelAnimationFrame(
+                animationFrame
+            );
+
+            animationFrame = null;
+
+        }
+
     }
 
 
-    /* =========================================
-       FLAP
-    ========================================= */
+    /* =====================================================
+       FLAP / FLY
+    ===================================================== */
 
     function flap() {
 
         if (!gameRunning) {
+
             return;
+
         }
 
+
+        /*
+           Give paper upward movement
+        */
 
         velocity =
             flapPower;
@@ -1202,9 +1549,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =========================================
+    /* =====================================================
        CREATE MONEY PIPE
-    ========================================= */
+    ===================================================== */
 
     function createMoneyPipe() {
 
@@ -1212,36 +1559,64 @@ document.addEventListener("DOMContentLoaded", function () {
             game.clientHeight;
 
 
+        /*
+           Gap selected according
+           to difficulty
+        */
+
         const gap =
             pipeGap;
 
 
-        const minTop =
-            40;
+        /*
+           Safe top limit
+        */
 
+        const minTop =
+            55;
+
+
+        /*
+           Keep enough space
+           for bottom pipe
+        */
 
         const maxTop =
             gameHeight -
             gap -
-            75;
+            100;
 
+
+        /*
+           Random top height
+        */
 
         const topHeight =
             Math.floor(
                 Math.random() *
-                (maxTop - minTop)
-                + minTop
+                (
+                    maxTop -
+                    minTop
+                )
+                +
+                minTop
             );
 
+
+        /*
+           Bottom height
+        */
 
         const bottomHeight =
             gameHeight -
             topHeight -
             gap -
-            35;
+            GROUND_HEIGHT;
 
 
-        /* TOP */
+        /*
+           Create top money stack
+        */
 
         const top =
             document.createElement(
@@ -1254,10 +1629,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         top.style.height =
-            topHeight + "px";
+            Math.max(
+                50,
+                topHeight
+            ) + "px";
 
 
-        /* BOTTOM */
+        /*
+           Create bottom money stack
+        */
 
         const bottom =
             document.createElement(
@@ -1270,13 +1650,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         bottom.style.height =
-            bottomHeight + "px";
+            Math.max(
+                50,
+                bottomHeight
+            ) + "px";
 
+
+        /*
+           Add to game
+        */
 
         game.appendChild(top);
 
         game.appendChild(bottom);
 
+
+        /*
+           Store pipe information
+        */
 
         moneyPipes.push({
 
@@ -1285,7 +1676,7 @@ document.addEventListener("DOMContentLoaded", function () {
             bottom: bottom,
 
             x:
-                game.clientWidth + 55,
+                game.clientWidth + 70,
 
             scored: false
 
@@ -1294,25 +1685,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =========================================
-       COLLISION
-    ========================================= */
+    /* =====================================================
+       COLLISION DETECTION
+    ===================================================== */
 
     function collision(pipe) {
 
         /*
-            Medium paper:
+           Paper rectangle
 
-            43px wide
-            54px high
+           Medium:
+           46 × 58
         */
 
         const paperLeft =
-            38;
+            PAPER_X;
 
 
         const paperRight =
-            paperLeft + 43;
+            paperLeft +
+            PAPER_WIDTH;
 
 
         const paperTop =
@@ -1320,32 +1712,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const paperBottom =
-            paperY + 54;
+            paperY +
+            PAPER_HEIGHT;
 
+
+        /*
+           Money rectangle
+        */
 
         const pipeLeft =
             pipe.x;
 
 
         const pipeRight =
-            pipe.x + 48;
+            pipe.x + 58;
 
+
+        /*
+           Check horizontal collision
+        */
 
         if (
             paperRight > pipeLeft &&
             paperLeft < pipeRight
         ) {
 
+            /*
+               Top money height
+            */
 
             const topHeight =
                 pipe.top.offsetHeight;
 
 
+            /*
+               Bottom money starts here
+            */
+
             const bottomStart =
                 game.clientHeight -
                 pipe.bottom.offsetHeight -
-                35;
+                GROUND_HEIGHT;
 
+
+            /*
+               Check vertical collision
+            */
 
             if (
                 paperTop < topHeight ||
@@ -1364,26 +1776,52 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =========================================
+    /* =====================================================
        PAPER LEAKED
-    ========================================= */
+    ===================================================== */
 
     function endGame() {
 
+        /*
+           Prevent duplicate calls
+        */
+
         if (!gameRunning) {
+
             return;
+
         }
 
+
+        /*
+           Stop game
+        */
 
         gameRunning = false;
 
 
         /*
-            Best score
+           Cancel animation
+        */
+
+        if (animationFrame !== null) {
+
+            cancelAnimationFrame(
+                animationFrame
+            );
+
+            animationFrame = null;
+
+        }
+
+
+        /*
+           Update best score
         */
 
         if (
-            score > bestScore
+            score >
+            bestScore
         ) {
 
             bestScore =
@@ -1398,12 +1836,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        bestScoreText.textContent =
-            bestScore;
+        /*
+           Display best score
+        */
+
+        if (bestScoreText) {
+
+            bestScoreText.textContent =
+                bestScore;
+
+        }
 
 
         /*
-            Sarcastic messages
+           Sarcastic messages
         */
 
         const jokes = [
@@ -1440,10 +1886,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
             "Even Google couldn't save this attempt. 💀",
 
-            "The paper saw the syllabus and chose freedom. 😂"
+            "The paper saw the syllabus and chose freedom. 😂",
+
+            "You came to write the exam. The paper came to escape. 🏃📄",
+
+            "The paper had better attendance than you. 😂",
+
+            "Breaking: Question paper chooses independence. 🇮🇳",
+
+            "Your paper has entered witness protection. 💀",
+
+            "Result: Paper escaped. Student confused. Professor disappointed. 😂"
 
         ];
 
+
+        /*
+           Select random joke
+        */
 
         const randomJoke =
             jokes[
@@ -1453,6 +1913,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 )
             ];
 
+
+        /*
+           Show game-over screen
+        */
 
         message.style.display =
             "flex";
@@ -1472,20 +1936,34 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =========================================
+    /* =====================================================
        GAME LOOP
-    ========================================= */
+    ===================================================== */
 
     function gameLoop(time) {
 
+        /*
+           Stop if game ended
+        */
+
         if (!gameRunning) {
+
             return;
+
         }
 
 
+        /*
+           Calculate frame time
+
+           This keeps the game
+           smooth on different devices.
+        */
+
         const delta =
             Math.min(
-                (time - lastTime) / 16.67,
+                (time - lastTime) /
+                16.67,
                 2
             );
 
@@ -1494,31 +1972,40 @@ document.addEventListener("DOMContentLoaded", function () {
             time;
 
 
-        /*
-            Paper physics
-        */
+        /* ===============================================
+           PAPER PHYSICS
+        =============================================== */
 
         velocity +=
-            gravity * delta;
+            gravity *
+            delta;
 
 
         paperY +=
-            velocity * delta;
+            velocity *
+            delta;
 
 
         /*
-            Rotation
+           Paper rotation
+
+           Slower rotation than
+           the previous version.
         */
 
         const rotation =
             Math.min(
                 Math.max(
-                    velocity * 4,
-                    -20
+                    velocity * 3,
+                    -18
                 ),
-                80
+                65
             );
 
+
+        /*
+           Update paper
+        */
 
         paper.style.top =
             paperY + "px";
@@ -1528,13 +2015,15 @@ document.addEventListener("DOMContentLoaded", function () {
             `rotate(${rotation}deg)`;
 
 
-        /*
-            Ceiling
-        */
+        /* ===============================================
+           CEILING
+        =============================================== */
 
         if (
-            paperY < 0
+            paperY <= 0
         ) {
+
+            paperY = 0;
 
             endGame();
 
@@ -1543,14 +2032,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-            Ground
-        */
+        /* ===============================================
+           GROUND
+        =============================================== */
+
+        const groundLimit =
+            game.clientHeight -
+            GROUND_HEIGHT;
+
 
         if (
-            paperY + 54 >
-            game.clientHeight - 35
+            paperY +
+            PAPER_HEIGHT >=
+            groundLimit
         ) {
+
+            paperY =
+                groundLimit -
+                PAPER_HEIGHT;
+
 
             endGame();
 
@@ -1559,36 +2059,47 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-            Create money
-        */
+        /* ===============================================
+           CREATE MONEY
+        =============================================== */
 
         pipeTimer += delta;
 
 
-        let spawnRate = 110;
+        /*
+           Spawn interval
+
+           Easy = slower
+           Normal = medium
+           Hard = faster
+        */
+
+        let spawnRate = 125;
 
 
         if (
-            selectedLevel === "normal"
+            selectedLevel ===
+            "normal"
         ) {
 
-            spawnRate = 105;
+            spawnRate = 115;
 
         }
 
 
         if (
-            selectedLevel === "hard"
+            selectedLevel ===
+            "hard"
         ) {
 
-            spawnRate = 90;
+            spawnRate = 100;
 
         }
 
 
         if (
-            pipeTimer > spawnRate
+            pipeTimer >=
+            spawnRate
         ) {
 
             createMoneyPipe();
@@ -1598,17 +2109,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-            Move money
-        */
+        /* ===============================================
+           MOVE MONEY
+        =============================================== */
 
         moneyPipes.forEach(
-            pipe => {
+            function (pipe) {
 
+                /*
+                   Move pipe
+                */
 
                 pipe.x -=
-                    pipeSpeed * delta;
+                    pipeSpeed *
+                    delta;
 
+
+                /*
+                   Update position
+                */
 
                 pipe.top.style.left =
                     pipe.x + "px";
@@ -1618,28 +2137,37 @@ document.addEventListener("DOMContentLoaded", function () {
                     pipe.x + "px";
 
 
-                /*
-                    Score
-                */
+                /* ======================================
+                   SCORE
+                ====================================== */
 
                 if (
                     !pipe.scored &&
-                    pipe.x + 48 < 38
+                    pipe.x +
+                    58 <
+                    PAPER_X
                 ) {
 
-                    pipe.scored = true;
+                    pipe.scored =
+                        true;
+
 
                     score++;
 
-                    scoreText.textContent =
-                        score;
+
+                    if (scoreText) {
+
+                        scoreText.textContent =
+                            score;
+
+                    }
 
                 }
 
 
-                /*
-                    Collision
-                */
+                /* ======================================
+                   COLLISION
+                ====================================== */
 
                 if (
                     collision(pipe)
@@ -1653,16 +2181,17 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /*
-            Remove old pipes
-        */
+        /* ===============================================
+           REMOVE OLD MONEY
+        =============================================== */
 
         moneyPipes =
             moneyPipes.filter(
-                pipe => {
+                function (pipe) {
 
                     if (
-                        pipe.x < -60
+                        pipe.x <
+                        -80
                     ) {
 
                         pipe.top.remove();
@@ -1673,22 +2202,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     }
 
+
                     return true;
 
                 }
             );
 
 
-        requestAnimationFrame(
-            gameLoop
-        );
+        /* ===============================================
+           NEXT FRAME
+        =============================================== */
+
+        animationFrame =
+            requestAnimationFrame(
+                gameLoop
+            );
 
     }
 
 
-    /* =========================================
+    /* =====================================================
        START BUTTON
-    ========================================= */
+    ===================================================== */
 
     startButton.addEventListener(
         "click",
@@ -1698,19 +2233,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
             event.stopPropagation();
 
+
             startGame();
 
         }
     );
 
 
-    /* =========================================
+    /* =====================================================
        GAME CLICK
-    ========================================= */
+    ===================================================== */
 
     game.addEventListener(
         "click",
         function (event) {
+
+            /*
+               Ignore level buttons
+            */
 
             if (
                 event.target.closest(
@@ -1723,6 +2263,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            /*
+               Ignore start button
+            */
+
             if (
                 event.target ===
                 startButton
@@ -1733,33 +2277,32 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            if (
-                !gameRunning &&
-                message.style.display !== "none"
-            ) {
+            /*
+               If game is running,
+               make paper fly
+            */
 
-                return;
+            if (gameRunning) {
+
+                flap();
 
             }
-
-
-            flap();
 
         }
     );
 
 
-    /* =========================================
+    /* =====================================================
        KEYBOARD
-    ========================================= */
+    ===================================================== */
 
     document.addEventListener(
         "keydown",
         function (event) {
 
             /*
-                Only respond when
-                Game Zone is open
+               Only work when
+               Game Zone is open
             */
 
             if (
@@ -1773,16 +2316,38 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            /*
+               Space key
+            */
+
             if (
-                event.code === "Space"
+                event.code ===
+                "Space"
             ) {
 
                 event.preventDefault();
 
 
+                /*
+                   If game isn't running,
+                   start it.
+                */
+
                 if (!gameRunning) {
 
-                    startGame();
+                    /*
+                       Only start if
+                       message is visible
+                    */
+
+                    if (
+                        message.style.display !==
+                        "none"
+                    ) {
+
+                        startGame();
+
+                    }
 
                 }
                 else {
@@ -1797,13 +2362,17 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    /* =========================================
-       TOUCH
-    ========================================= */
+    /* =====================================================
+       TOUCH CONTROL
+    ===================================================== */
 
     game.addEventListener(
         "touchstart",
         function (event) {
+
+            /*
+               Ignore level buttons
+            */
 
             if (
                 event.target.closest(
@@ -1816,6 +2385,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            /*
+               Ignore start button
+            */
+
             if (
                 event.target ===
                 startButton
@@ -1826,15 +2399,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            /*
+               Prevent page scrolling
+            */
+
             event.preventDefault();
 
 
-            if (!gameRunning) {
+            /*
+               Fly paper
+            */
 
-                startGame();
-
-            }
-            else {
+            if (gameRunning) {
 
                 flap();
 
@@ -1847,10 +2423,22 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    /* =========================================
-       INITIAL
-    ========================================= */
+    /* =====================================================
+       INITIAL SETTINGS
+    ===================================================== */
 
     applyLevelSettings();
+
+
+    /*
+       Initial paper position
+    */
+
+    paper.style.top =
+        paperY + "px";
+
+
+    paper.style.transform =
+        "rotate(-8deg)";
 
 });
