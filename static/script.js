@@ -861,30 +861,57 @@ document.addEventListener("DOMContentLoaded", function () {
        GAME Audio mute unmute
     ===================================================== */
 
-    if (gameMuteButton && gameBGM) {
+  if (gameMuteButton && gameBGM) {
 
-    gameMuteButton.addEventListener("click", function () {
+    gameMuteButton.addEventListener(
+        "click",
+        function (event) {
 
-        gameBGM.muted = !gameBGM.muted;
+            event.preventDefault();
+            event.stopPropagation();
 
-        if (gameBGM.muted) {
-            gameMuteButton.textContent = "🔇";
-            gameMuteButton.setAttribute(
-                "aria-label",
-                "Unmute game music"
-            );
-        } else {
-            gameMuteButton.textContent = "🔊";
-            gameMuteButton.setAttribute(
-                "aria-label",
-                "Mute game music"
-            );
+            gameBGM.muted = !gameBGM.muted;
+
+            if (gameBGM.muted) {
+
+                gameMuteButton.textContent = "🔇";
+
+                gameMuteButton.setAttribute(
+                    "aria-label",
+                    "Unmute game music"
+                );
+
+            } else {
+
+                gameMuteButton.textContent = "🔊";
+
+                gameMuteButton.setAttribute(
+                    "aria-label",
+                    "Mute game music"
+                );
+
+                /*
+                   If music was stopped for any reason,
+                   start it again when user unmutes.
+                */
+
+                if (gameRunning) {
+
+                    gameBGM.play().catch(function (error) {
+                        console.log(
+                            "Game BGM could not resume:",
+                            error
+                        );
+                    });
+
+                }
+
+            }
+
         }
-
-    });
+    );
 
 }
-
 
     /* =====================================================
        GAME VARIABLES
@@ -2262,26 +2289,40 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =====================================================
        START BUTTON
     ===================================================== */
+startButton.addEventListener(
+    "click",
+    function (event) {
 
-    startButton.addEventListener(
-        "click",
-        function (event) {
-            if (gameBGM) {
-    gameBGM.currentTime = 0;
-    gameBGM.volume = 0.35;
-    gameBGM.play();
-}
+        event.preventDefault();
+        event.stopPropagation();
 
-            event.preventDefault();
+        /* =========================
+           START GAME BGM
+        ========================= */
 
-            event.stopPropagation();
+        if (gameBGM) {
 
+            gameBGM.pause();
 
-            startGame();
+            gameBGM.currentTime = 0;
 
+            gameBGM.volume = 0.35;
+
+            gameBGM.muted = false;
+
+            gameBGM.play().catch(function (error) {
+                console.log("Game BGM could not start:", error);
+            });
         }
-    );
 
+        /* =========================
+           START GAME
+        ========================= */
+
+        startGame();
+
+    }
+);
 
     /* =====================================================
        GAME CLICK
