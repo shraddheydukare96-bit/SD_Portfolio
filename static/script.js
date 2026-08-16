@@ -2442,3 +2442,63 @@ document.addEventListener("DOMContentLoaded", function () {
         "rotate(-8deg)";
 
 });
+/* =========================================================
+   MOBILE GAME ZONE BUTTON
+   ========================================================= */
+
+const profileGameContainer =
+    document.getElementById("profileGameContainer");
+
+const gameZoneButton =
+    document.getElementById("gameZoneButton");
+
+
+if (
+    profileGameContainer &&
+    gameZoneButton
+) {
+
+    profileGameContainer.addEventListener(
+        "click",
+        function (event) {
+
+            /*
+             * Only use this behavior on mobile
+             */
+
+            if (
+                window.innerWidth <= 768
+            ) {
+
+                /*
+                 * If the Game Zone button
+                 * itself was clicked,
+                 * don't hide it.
+                 */
+
+                if (
+                    event.target.closest(
+                        "#gameZoneButton"
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                 * Show Game Zone button
+                 * at the bottom.
+                 */
+
+                gameZoneButton.classList.add(
+                    "mobile-show"
+                );
+
+            }
+
+        }
+    );
+
+}

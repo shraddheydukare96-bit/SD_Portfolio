@@ -2015,20 +2015,22 @@ footer p {
    GAME ZONE BUTTON
    ========================================================= */
 
-
 .game-zone-button {
+
     position: absolute;
 
     top: 50%;
     left: 50%;
 
-    transform: translate(-50%, -50%) scale(0.85);
+    transform:
+        translate(-50%, -50%)
+        scale(0.85);
 
-    min-width: 190px;
+    min-width: 200px;
 
-    padding: 16px 30px;
+    padding: 17px 32px;
 
-    border: 2px solid rgba(255,255,255,0.4);
+    border: 2px solid rgba(255,255,255,0.45);
 
     border-radius: 50px;
 
@@ -2038,7 +2040,7 @@ footer p {
 
     font-family: inherit;
 
-    font-size: 18px;
+    font-size: 19px;
 
     font-weight: 800;
 
@@ -2052,9 +2054,11 @@ footer p {
 
     pointer-events: none;
 
-    z-index: 50;
+    z-index: 100;
 
     backdrop-filter: blur(10px);
+
+    -webkit-backdrop-filter: blur(10px);
 
     box-shadow:
         0 10px 35px rgba(0,0,0,0.35);
@@ -2062,12 +2066,15 @@ footer p {
     transition:
         opacity 0.3s ease,
         transform 0.3s ease,
-        background 0.3s ease,
-        box-shadow 0.3s ease;
+        visibility 0.3s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 
-/* Show when cursor enters picture */
+/* =========================================================
+   DESKTOP HOVER
+   ========================================================= */
 
 .profile-image-container:hover .game-zone-button {
 
@@ -2080,11 +2087,12 @@ footer p {
     transform:
         translate(-50%, -50%)
         scale(1);
-
 }
 
 
-/* Button hover */
+/* =========================================================
+   DESKTOP BUTTON HOVER
+   ========================================================= */
 
 .game-zone-button:hover {
 
@@ -2095,52 +2103,95 @@ footer p {
     border-color: #4ade80;
 
     box-shadow:
-        0 15px 40px rgba(34,197,94,0.35);
+        0 15px 40px rgba(34,197,94,0.40);
 
     transform:
         translate(-50%, -50%)
         scale(1.06);
-
 }
 
 
 /* =========================================================
    MOBILE
+   Hidden by default
+   Positioned at bottom
    ========================================================= */
 
 @media (max-width: 768px) {
 
     .game-zone-button {
 
-        min-width: 180px;
+        top: auto;
 
-        padding: 15px 25px;
+        bottom: 25px;
+
+        left: 50%;
+
+        min-width: 190px;
+
+        padding: 15px 27px;
 
         font-size: 17px;
 
-        opacity: 0.9;
+        opacity: 0;
+
+        visibility: hidden;
+
+        pointer-events: none;
+
+        transform:
+            translateX(-50%)
+            scale(0.85);
+    }
+
+
+    /*
+       Mobile button becomes visible
+       after tapping the profile picture
+    */
+
+    .game-zone-button.mobile-show {
+
+        opacity: 1;
 
         visibility: visible;
 
         pointer-events: auto;
 
         transform:
-            translate(-50%, -50%)
+            translateX(-50%)
             scale(1);
-
     }
 
 
-    .game-zone-button:hover {
+    .game-zone-button.mobile-show:hover {
 
         transform:
-            translate(-50%, -50%)
+            translateX(-50%)
             scale(1.04);
-
     }
 
 }
 
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .game-zone-button {
+
+        bottom: 20px;
+
+        min-width: 180px;
+
+        padding: 14px 24px;
+
+        font-size: 16px;
+    }
+
+}
 
 
 /* =========================================================
