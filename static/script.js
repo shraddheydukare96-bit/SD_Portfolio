@@ -825,6 +825,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const startButton =
         document.getElementById("gameStartButton");
+        
+        const gameBGM = 
+    document.getElementById("gameBGM");
+
+    const gameMuteButton = 
+    document.getElementById("gameMuteButton");
 
     const levelDisplay =
         document.getElementById("gameLevelDisplay");
@@ -850,6 +856,34 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
         return;
     }
+
+/* =====================================================
+       GAME Audio mute unmute
+    ===================================================== */
+
+    if (gameMuteButton && gameBGM) {
+
+    gameMuteButton.addEventListener("click", function () {
+
+        gameBGM.muted = !gameBGM.muted;
+
+        if (gameBGM.muted) {
+            gameMuteButton.textContent = "🔇";
+            gameMuteButton.setAttribute(
+                "aria-label",
+                "Unmute game music"
+            );
+        } else {
+            gameMuteButton.textContent = "🔊";
+            gameMuteButton.setAttribute(
+                "aria-label",
+                "Mute game music"
+            );
+        }
+
+    });
+
+}
 
 
     /* =====================================================
@@ -1146,6 +1180,10 @@ document.addEventListener("DOMContentLoaded", function () {
     closeGameButton.addEventListener(
         "click",
         function (event) {
+            if (gameBGM) {
+    gameBGM.pause();
+    gameBGM.currentTime = 0;
+}
 
             event.preventDefault();
 
@@ -2228,6 +2266,11 @@ document.addEventListener("DOMContentLoaded", function () {
     startButton.addEventListener(
         "click",
         function (event) {
+            if (gameBGM) {
+    gameBGM.currentTime = 0;
+    gameBGM.volume = 0.35;
+    gameBGM.play();
+}
 
             event.preventDefault();
 

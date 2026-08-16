@@ -2319,7 +2319,42 @@ footer p {
     background: #ef4444;
     transform: rotate(90deg);
 }
+/* mute unmute button */
+#gameMuteButton {
+    position: absolute;
+    top: 20px;
+    right: 65px;
 
+    width: 44px;
+    height: 44px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.65);
+    color: white;
+
+    font-size: 20px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 9999;
+
+    transition: transform 0.2s ease,
+                background 0.2s ease;
+}
+
+#gameMuteButton:hover {
+    transform: scale(1.1);
+    background: rgba(0, 0, 0, 0.85);
+}
+
+#gameMuteButton:active {
+    transform: scale(0.95);
+}
 
 /* =========================================================
    BIGGER GAME AREA
@@ -2973,6 +3008,20 @@ footer p {
     #gamePaper {
 
         left: 50px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    #gameMuteButton {
+        top: 15px;
+        right: 58px;
+
+        width: 40px;
+        height: 40px;
+
+        font-size: 18px;
     }
 
 }
